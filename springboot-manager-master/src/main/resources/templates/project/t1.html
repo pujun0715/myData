@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>项目详情</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/custom.form.css">
+
+</head>
+<body>
+<div>
+
+    <form>
+        <table class="layui-table " lay-filter="showTable">
+
+            <tr>
+                <th lay-data="{field:'id', width:80, sort: true, fixed: true}">项目名称</th>
+                <th lay-data="{field:'username1', width:80}">创建人</th>
+                <th lay-data="{field:'username1', width:80}">审核人</th>
+                <th lay-data="{field:'username2', width:80}">客户</th>
+                <th lay-data="{field:'username2', width:80}">状态</th>
+                <th lay-data="{field:'username2', width:80}">创建时间</th>
+                <th lay-data="{field:'username2', width:80}">修改时间</th>
+            </tr>
+
+                <tr th:each="b : ${t1}">
+                    <td th:text="${b.getProjectName()}"></td>
+                    <td th:text="${b.getCjName()}"></td>
+                    <td th:text="${b.getSenheName()}"></td>
+                    <td th:text="${b.getKehuName()}"></td>
+                    <td th:text="${b.getStutues()==2?'通过':(b.getStutues()==0?'驳回':'待审核')}"></td>
+                    <td th:text="${#dates.format(b.getCreateTime(), 'dd-MM-yyyy HH:mm')}"></td>
+                    <td th:text="${#dates.format(b.getUpdateTime(), 'dd-MM-yyyy HH:mm')}"></td>
+                </tr>
+        </table>
+    </form>
+    <div class="1">
+        <button  class="layui-btn layui-btn-normal" id="btn_cancel">返回</button>
+    </div>
+    </div>
+
+</body>
+</html>
+<script src="/layui/layui.all.js"></script>
+<script src="/js/core.util.js"></script>
+
+
+
+
+<script>
+
+    var $ = jQuery = layui.jquery;
+    $("#btn_cancel").click(function() {
+        window.location.href='/index/gogzhi';
+        return false;
+    });
+</script>

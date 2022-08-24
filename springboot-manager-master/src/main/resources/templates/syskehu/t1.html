@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>客户详情</title>
+    <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/custom.form.css">
+
+</head>
+<body>
+
+<form id="bookDetailForm m-auto">
+    <input type="hidden" value="${t1}" name="bid"/>
+    <table class="layui-table" id="demo">
+        <tr>
+            <h2>客户详情</h2>
+        </tr>
+        <tr>
+            <td>客户编号:</td>
+            <td th:text="${t1.getId()}"></td>
+            </div>
+        </tr>
+        <tr>
+            <td>客户姓名:</td>
+            <td th:text="${t1.getName()}"></td>
+            </div>
+        </tr>
+
+        <tr>
+            <td>联系方式：</td>
+            <td th:text="${t1.getPhone()}"></td>
+
+        </tr>
+
+    </table>
+
+
+
+</form>
+<div class="1">
+    <button  class="layui-btn layui-btn-normal" id="btn_cancel">返回</button>
+
+</div>
+</body>
+</html>
+<script src="/layui/layui.all.js"></script>
+<script src="/js/core.util.js"></script>
+<script>
+    var $ = jQuery = layui.jquery;
+    $("#btn_cancel").click(function() {
+        window.location.href='/index/project';
+        return false;
+    });
+</script>

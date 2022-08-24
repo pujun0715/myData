@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.project.mapper.GogzhiMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.company.project.entity.GogzhiEntity" id="gogzhiMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="lisiProject" column="lisi_project"/>
+        <result property="pingjia" column="pingjia"/>
+        <result property="gongzhi" column="gongzhi"/>
+        <result property="pingfen" column="pingfen"/>
+    </resultMap>
+
+
+</mapper>

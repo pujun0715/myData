@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/custom.form.css">
+</head>
+<body>
+<div class="panel panel-default operation" hidden>
+  <div class="panel-heading title"></div>
+<div class="layui-card-body">
+<form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
+      <input name="id" hidden/>
+        <div class="layui-form-item">
+      <label class="layui-form-label">项目名称</label>
+      <div class="layui-input-block">
+        <input type="projectName" name="projectName" placeholder="请输入项目名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">创建人</label>
+      <div class="layui-input-block">
+        <input type="cjName" name="cjName" placeholder="请输入创建人" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item" id="senhe">
+         <label class="layui-form-label">审核人（主管）</label>
+      <div class="layui-input-block">
+        <input type="senheName" name="senheName" placeholder="请输入审核人（主管）" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item" id="kehu">
+      <label class="layui-form-label">客户姓名</label>
+      <div class="layui-input-block">
+        <input type="kehuName" name="kehuName" placeholder="请输入客户姓名" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item" id="zt">
+      <label class="layui-form-label">状态</label>
+      <div class="layui-input-block">
+        <!--<input type="stutues" name="stutues" placeholder="请输入状态(2：审核中 1:审核中 0:弃用)" autocomplete="off" class="layui-input">-->
+          <input type="radio" name="stutues"  value="1" title="待审核">
+          <input type="radio" name="stutues"  value="2" title="项目通过">
+          <input type="radio" name="stutues" value="0" title="驳回" >
+      </div>
+    </div>
+
+
+    <div class="layui-form-item" id="wenjian">
+        <label class="layui-form-label">文件选择</label>
+        <div class="layui-input-inline">
+            <button type="button" class="layui-btn" id="upload">
+                <i class="layui-icon">&#xe67c;</i>上传文件
+            </button>
+        </div>
+    </div>
+       <div class="layui-form-item"hidden>
+      <label class="layui-form-label">文件名</label>
+      <div class="layui-input-block">
+        <input type="filename" name="filename" placeholder="请输入文件名" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+  <div class="layui-form-item">
+  <div class="layui-input-block">
+    <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">保存</button>
+    <button  class="layui-btn layui-btn-primary" id="btn_cancel">返回</button>
+  </div>
+</div>
+</form>
+</div>
+</div>
+<!--<a th:if="${t1=='项目2'}" > ewewfesdfsd</i> </a>-->
+<div class="table_div">
+  <div id="searchParam"  shiro:hasPermission="project:list">
+    <div class="layui-form-item">
+      <div class="layui-input-inline">
+        <input type="text" id="projectname" class="layui-input"  autocomplete="off" placeholder="请输入项目名">
+      </div>
+       <div class="layui-input-inline">
+            <input type="text" id="cjname" class="layui-input" autocomplete="off" placeholder="请输入创建者">
+        </div>
+        <div class="layui-input-inline layui-form">
+            <select id="status">
+                <option value="">请选择项目状态状态</option>
+                <option value="0">驳回</option>
+                <option value="1">待审核</option>
+                <option value="2">通过</option>
+            </select>
+        </div>
+    <div id="t1" th:text="${t1}" hidden></div>
+      <div class="layui-input-inline ">
+        <button class="layui-btn" onclick="search()"  id="search">查询</button>
+        <button class="layui-btn"   id="export">导出全部</button>
+      </div>
+    </div>
+
+  </div>
+  <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
+</div>
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="project:add">添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="project:delete">删除</button>
+  </div>
+</script>
+<script type="text/html" id="tool">
+  <div id="sehe"class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="project:update" th:text="编辑"></div>
+  <div class="layui-btn layui-btn-xs" lay-event="pr" shiro:hasPermission="project:yijian">添加意见</div>
+  <div class="layui-btn layui-btn-xs" lay-event="pre" shiro:hasPermission="sysFiles:list">文件下载</div>
+  <div class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="project:delete">删除</div>
+
+</script>
+<div class="1">
+    <button class="layui-btn layui-btn-normal" id="btn" th:text="返回" th:if="${t1}"></button>
+    <!--<div><span id="nickName">guest</span></div>-->
+    <!--<div id="2124" class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="project:update" th:text="编辑"></div>-->
+</div>
+
+
+</body>
+
+
+</html>
+<script src="/layui/layui.all.js"></script>
+<script src="/js/core.util.js"></script>
+<script>
+    function skip(code){
+
+
+      window.location.href='tt/sysKehu12/'+code
+
+
+    }
+</script>
+
+<script>
+
+  //获取token
+  var token = CoreUtil.getData("access_token");
+  //地址栏转义token中的#号
+  var tokenQuery = token.replace("#", "%23");
+  var tableIns1;
+  var table = layui.table;
+  var form = layui.form;
+  var layer = layui.layer;
+  var $ = jQuery = layui.jquery;
+  var laydate = layui.laydate;
+  var upload = layui.upload;
+  var role;
+  var t2;
+  var t3;
+  var guanli;
+  var yuangong;
+  layui.use(['table', 'layer', 'laydate','upload'], function () {
+
+    //加载table
+    tableIns1 = table.render({
+      elem: '#showTable'
+        // ,width:1000
+      , contentType: 'application/json'
+      , headers: {"authorization": token}
+      , page: true //开启分页
+      , url: '/project/listByPage' //数据接口
+      , method: 'POST'
+      , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+        return {
+          "code": res.code, //解析接口状态
+          "msg": res.msg, //解析提示文本
+          "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+          "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
+        }
+      }
+      , cols: [
+        [
+          {type: 'checkbox', fixed: 'left'},
+          {field: 'id', title: 'id', sort: true,hide:true },
+          {field: 'projectName', title: '项目名称', sort: true},
+          {field: 'cjName', title: '创建人', sort: true},
+          {field: 'senheName', title: '审核人（主管）', sort: true},
+          {field: 'kehuName', title: '客户姓名', sort: true
+          ,templet:'<div><a class="iconfont icon-chakanbaogao" style="margin-left: 3%; color: #2196F3;border-radius: 5px; cursor: pointer;text-decoration: underline;" target="_blank" onclick="skip(\''+'{{d.kehuName}}'+'\');">{{ d.kehuName}} </a></div>'},
+            {
+                field: 'stutues', title: '进度', width: 100, templet: function (item) {
+                    if (item.stutues === 0) {
+                        return "驳回";
+                    }
+                    if (item.stutues === 1) {
+                        return "待审核";
+                    }
+                    if (item.stutues === 2) {
+                        return "通过";
+                    }
+                }
+            },
+            // {field: 'stutues', title: '状态', sort: true,width:80},
+          {field: 'createTime', title: '创建时间', sort: true},
+          {field: 'updateTime', title: '更新时间', sort: true},
+          {field: 'filename', title: '文件名', sort: true,width:100},
+          {width: 120, toolbar: "#tool", title: '操作',width:250}
+        ]
+      ]
+      , toolbar: '#toolbar',
+
+    });
+
+      CoreUtil.sendGet("/sys/home/", null,function (res) {
+          t2 = res.data.userInfo.id;
+          t3 = res.data.userInfo.username;
+          CoreUtil.sendGet('/sys/role_d/' + t2, String, function (res1) {
+              role = res1.data.roleId;
+             console.log("用户ID："+ t2);
+             console.log("用户名："+t3);
+             console.log("角色ID: "+role);
+      //if(role=="1471316791631532034"){
+
+    // }
+              var uploadInst1 = upload.render({
+                  elem: '#upload' //绑定元素
+                  ,accept: 'file'
+                  ,url: '/project/upload?authorization='+tokenQuery //上传接口
+                  ,done: function(res){
+
+                      //上传完毕回调
+                  }
+                  ,error: function(){
+                      //请求异常回调
+                  }
+              });
+
+              search();
+              //表头工具
+              table.on('toolbar(showTable)', function(obj){
+                  switch(obj.event){
+                      case 'batchDeleted':
+                          var checkStatus = table.checkStatus(obj.config.id);
+                          var data = checkStatus.data;
+                          if(data.length==0){
+                              layer.msg("请选择要批量删除的列");
+                          }else {
+                              var ids = [];
+                              $(data).each(function (index,item) {
+                                  ids.push(item.id);
+                              });
+                              tipDialog(ids);
+                          }
+                          break;
+                      case 'add':
+
+                          $(".table_div").hide();
+                          $(".operation").show();
+                          $(".title").html("新增");
+                          if(role=="1471316791631532034"){
+                             $("#wenjian").attr("hide",false);
+
+                              $("#senhe").attr("hide",false);
+                              $("#kehu").attr("hide",false);
+                          }
+                          $(".operation input[name=id]").val("");
+                          $(".operation input[name=projectName]").attr("disabled",false);
+                          $(".operation input[name=cjName]").attr("disabled",false);
+
+                          $(".operation input[name=projectName]").val("");
+                          $(".operation input[name=cjName]").val(t3);
+                          $(".operation input[name=cjName]").attr("disabled",true);
+
+                          $(".operation input[name=senheName]").val("");
+                          $(".operation input[name=kehuName]").val("");
+                          $(".operation input[name=stutues][value=0]").attr("disabled",true);
+                          $(".operation input[name=stutues][value=0]").attr("disabled",true);
+                          $(".operation input[name=stutues][value=1]").attr("checked",true);
+                          $(".operation input[name=stutues][value=2]").attr("disabled",true);
+                          $(".operation input[name=createTime]").val("");
+                          $(".operation input[name=updateTime]").val("");
+                          $(".operation input[name=filename]").val("");
+                          form.render();
+                          break;
+                  };
+              });
+              //列操作
+              table.on('tool(showTable)',function (obj) {
+
+                  var data = obj.data;
+                  switch (obj.event) {
+                      case 'pre':
+                          //预览
+                          window.open(data.url,'_blank');
+                          break;
+                      case 'del':
+                          var ids=[];
+                          ids.push(data.id);
+                          tipDialog(ids);
+                          break;
+                      case 'pr':
+                          if(data.stutues==1){
+                              layer.msg("该项目待审核,请先审核呦！");
+                          }
+                          else if(data.stutues==2){
+                              layer.msg("该项目已经通过，无需添加意见！");
+                          }
+                           else
+                           window.location.href='yijian/tianjia/'+data.id;
+                           break;
+                      case 'edit':
+                          $(".table_div").hide();
+                          $(".operation").show();
+                          $(".title").html("编辑");
+                          if(role=="1471316889581113345"){
+                       $("#zt").hide();
+
+                          }
+                          if(role=="1"){
+                              $(".operation input[name=cjName]").attr("disabled",false);
+                          }
+
+                          $(".operation input[name=id]").val(data.id);
+                          $(".operation input[name=projectName]").val(data.projectName);
+                          $(".operation input[name=cjName]").val(data.cjName);
+                          $(".operation input[name=senheName]").val(data.senheName);
+                          $(".operation input[name=kehuName]").val(data.kehuName);
+                          $(".operation input[name=createTime]").val(data.createTime);
+                          $(".operation input[name=updateTime]").val(data.updateTime);
+                          $(".operation input[name=filename]").val(data.filename);
+                          $(".operation input[name=stutues][value=0]").attr("disabled",false);
+                          $(".operation input[name=stutues][value=1]").attr("disabled",false);
+                          $(".operation input[name=stutues][value=2]").attr("disabled",false);
+                          $(".operation input[name=stutues][value=0]").prop("checked",data.stutues == 0 ? true : false );
+                          $(".operation input[name=stutues][value=1]").prop("checked",data.stutues == 1 ? true : false);
+                          $(".operation input[name=stutues][value=2]").prop("checked",data.stutues == 2 ? true : false);
+                          //form.render(); //更新全部
+                          //   form.render(); //更新全部
+                          if(role=="1471316791631532034"){
+                              $(".operation input[name=projectName]").attr("disabled",true);
+                              $("#wenjian").hide();
+                              $(".operation input[name=cjName]").attr("disabled",true);
+                              $("#senhe").hide();
+                              $("#kehu").hide();
+                          }
+                          form.render();
+                          break;
+
+
+
+
+                  }
+              });
+
+              //导出
+              $('#export').on('click', function () {
+                  //原先分页limit
+                  var exportParams = {
+                      limit: 10000,
+                      key: $("#key").val()
+                  };
+                  CoreUtil.sendPost("/project/listByPage", exportParams, function (res) {
+                      //初始化渲染数据
+                      if (res.data != null && res.data.records != null) {
+                          table.exportFile(tableIns1.config.id, res.data.records, 'xls');
+                      }
+                  });
+              });
+
+              //删除
+              var tipDialog=function (ids) {
+                  layer.open({
+                      content: "确定要删除么?",
+                      yes: function(index, layero){
+                          layer.close(index); //如果设定了yes回调，需进行手工关闭
+                          CoreUtil.sendDelete("/project/delete",ids,function (res) {
+                              layer.msg(res.msg, {time:1000},function () {
+                                  search();
+                              });
+                          });
+                      }
+                  });
+              };
+
+              //返回
+              $("#btn_cancel").click(function() {
+                  $(".table_div").show();
+                  $(".operation").hide();
+                  return false;
+              });
+              $("#btn").click(function() {
+                  window.location.href='/index/yijian';
+                  return false;
+              });
+
+              //监听保存
+              form.on('submit(submit)', function(data){
+                  if(data.field.id===undefined || data.field.id===null || data.field.id===""){
+                      CoreUtil.sendPost("/project/add",data.field,function (res) {
+                          $(".table_div").show();
+                          $(".operation").hide();
+                          search();
+                      });
+                  }else {
+                      CoreUtil.sendPut("/project/update",data.field,function (res) {
+                          $(".table_div").show();
+                          $(".operation").hide();
+                          search();
+                      });
+                  }
+
+                  return false;
+              });
+          });
+          });
+      });
+
+
+  //执行查询
+  function search() {
+      //$(#212.text("565626");
+
+    //这里以搜索为例
+      if(role=="1471316889581113345")//角色员工
+      {
+          yuangong=t3;
+      }
+      else if(role=="1471316791631532034"){//角色主管
+          guanli=t3;}
+    tableIns1.reload({
+
+      where: { //设定异步数据接口的额外参数，任意设
+          project_name : $("#projectname").val()||$("#t1").text(),
+          cj_name: yuangong||$("#cjname").val(),
+          senheName: guanli,
+          stutues: $("#status").val(),
+      }
+      , page: {
+        curr: 1 //重新从第 1 页开始
+      }
+    });
+  };
+</script>

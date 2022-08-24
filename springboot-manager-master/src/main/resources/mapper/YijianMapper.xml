@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.company.project.mapper.YijianMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.company.project.entity.YijianEntity" id="yijianMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="jianyi" column="jianyi"/>
+        <result property="cjName" column="cj_name"/>
+        <result property="statues" column="statues"/>
+    </resultMap>
+
+
+</mapper>

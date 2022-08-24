@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/css/custom.form.css">
+</head>
+<body>
+
+<div class="panel panel-default operation" hidden>
+  <div class="panel-heading title"></div>
+<div class="layui-card-body">
+<form class="layui-form " action="" lay-filter="info" style="width: 700px;margin-top: 10px">
+      <input name="id" hidden/>
+        <div class="layui-form-item">
+      <label class="layui-form-label">项目名称</label>
+      <div class="layui-input-block">
+        <input type="name" name="name" placeholder="请输入项目名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+        <div class="layui-form-item">
+      <label class="layui-form-label">修改意见</label>
+      <div class="layui-input-block">
+        <input type="jianyi" name="jianyi" placeholder="请输入修改意见" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">员工名</label>
+        <div class="layui-input-block">
+            <input type="cjName" name="cjName" placeholder="请输入员工名" autocomplete="off" class="layui-input">
+        </div>
+    </div><div class="layui-form-item">
+    <label class="layui-form-label">添加者</label>
+    <div class="layui-input-block">
+        <input type="shenheren" name="shenheren" placeholder="请输入添加者" autocomplete="off" class="layui-input">
+    </div>
+</div>
+
+        <div class="layui-form-item">
+      <label class="layui-form-label">进度</label>
+      <div class="layui-input-block">
+          <input type="checkbox" name="statues" lay-skin="switch" lay-filter="switch"  lay-text="已修改|待处理" checked>
+      </div>
+    </div>
+
+  <div class="layui-form-item">
+  <div class="layui-input-block">
+    <button type="submit" class="layui-btn" lay-submit="" lay-filter="submit">添加</button>
+    <button  class="layui-btn layui-btn-primary" id="btn_cancel">返回意见表</button>
+  </div>
+</div>
+</form>
+</div>
+</div>
+
+<div class="table_div">
+  <div id="searchParam"  shiro:hasPermission="yijian:list">
+    <div class="layui-form-item">
+      <div class="layui-input-inline">
+        <input type="text" id="key" class="layui-input"  autocomplete="off" placeholder="请输入项目名">
+      </div>
+
+      <div class="layui-input-inline ">
+        <button class="layui-btn" onclick="search()"  id="search">查询</button>
+        <button class="layui-btn"   id="export">导出全部</button>
+      </div>
+        <!--<div><span id="nickName">guest</span></div>-->
+    </div>
+
+  </div>
+  <table class="layui-table" id="showTable" lay-filter="showTable" ></table>
+</div>
+
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="add"  shiro:hasPermission="yijian:add">添加</button>
+    <button class="layui-btn layui-btn-sm" lay-event="batchDeleted" shiro:hasPermission="yijian:delete">删除</button>
+
+  </div>
+</script>
+<script type="text/html" id="tool">
+  <a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="yijian:update">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="yijian:delete">删除</a>
+</script>
+
+</body>
+<div class="1">
+    <button  class="layui-btn layui-btn-normal" id="btn_">返回项目表</button>
+</div>
+</html>
+<script src="/layui/layui.all.js"></script>
+<script src="/js/core.util.js"></script>
+<script>
+    function skip(code){
+
+
+        window.location.href='t1/project/'+code;
+
+
+    }
+</script>
+<script>
+  //获取token
+var token = CoreUtil.getData("access_token");
+  //地址栏转义token中的#号
+  var tokenQuery = token.replace("#", "%23");
+  var tableIns1;
+  var table = layui.table;
+  var form = layui.form;
+  var layer = layui.layer;
+  var $ = jQuery = layui.jquery;
+  var laydate = layui.laydate;
+var role;
+ var t2;
+var t3;
+  var guanli;
+  var yuangong;
+
+  layui.use(['table', 'layer', 'laydate'], function () {
+
+      //加载table
+      tableIns1 = table.render({
+          elem: '#showTable'
+          , contentType: 'application/json'
+          , headers: {"authorization": token}
+          , page: true //开启分页
+          , url: '/yijian/listByPage' //数据接口
+          , method: 'POST'
+          , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+              return {
+                  "code": res.code, //解析接口状态
+                  "msg": res.msg, //解析提示文本
+                  "count": CoreUtil.isEmpty(res.data) ? 0 : res.data.total, //解析数据长度
+                  "data": CoreUtil.isEmpty(res.data) ? null : res.data.records //解析数据列表
+              }
+          }
+          , cols: [
+              [
+                  {type: 'checkbox', fixed: 'left'},
+                  {field: 'id', title: 'id', sort: true},
+                  {field: 'name', title: '项目名称', sort: true
+                      ,templet:'<div><a class="iconfont icon-chakanbaogao" style="margin-left: 3%; color: #2196F3;border-radius: 5px; cursor: pointer;text-decoration: underline;" target="_blank" onclick="skip(\''+'{{d.name}}'+'\');">{{ d.name}} </a></div>'},
+                  {field: 'jianyi', title: '修改意见', sort: true},
+                  {field: 'cjName', title: '员工名', sort: true},
+                  {field: 'shenheren', title: '添加者', sort: true},
+                  {
+                      field: 'statues', title: '状态', width: 100, templet: function (item) {
+                          if (item.statues === 1) {
+                              return '  <input type="checkbox" lay-skin="switch" lay-text="已修改|待处理" checked disabled>';
+                          }
+                          if (item.statues === 0) {
+                              return '  <input type="checkbox" lay-skin="switch" lay-text="已修改|待处理" disabled>';
+                          }
+                      }
+                  },
+                  {width: 120, toolbar: "#tool", title: '操作'}
+              ]
+          ]
+          , toolbar: '#toolbar'
+      });
+
+
+
+
+      CoreUtil.sendGet("/sys/home/", null, function (res) {
+          t2=res.data.userInfo.id;
+          t3=res.data.userInfo.username;
+          CoreUtil.sendGet('/sys/role_d/'+t2, String, function (res1) {
+              role = res1.data.roleId;
+            //
+              //  console.log(role);
+
+//表头工具
+
+              table.on('toolbar(showTable)', function(obj){
+
+                  switch(obj.event){
+                      case 'batchDeleted':
+                          var checkStatus = table.checkStatus(obj.config.id);
+                          var data = checkStatus.data;
+                          if(data.length==0){
+                              layer.msg("请选择要批量删除的列");
+                          }else {
+                              var ids = [];
+                              $(data).each(function (index,item) {
+                                  ids.push(item.id);
+                              });
+                              tipDialog(ids);
+                          }
+                          break;
+                      case 'add':
+                          $(".table_div").hide();
+                          $(".operation").show();
+                          $(".title").html("新增");
+                          $(".operation input[name=id]").val("");
+                          $(".operation input[name=name]").val("");
+                          $(".operation input[name=jianyi]").val("");
+                          $(".operation input[name=cjName]").val("");
+                          $(".operation input[name=shenheren]").val("");
+                          $(".operation input[name=statues]").attr('checked', 'checked');
+                          $(".operation input[name=statues]").attr('type', 'hidden').removeAttr("checked").val(0);
+                          var x = document.getElementsByClassName("layui-unselect layui-form-switch");
+                          x[0].setAttribute("class", "layui-unselect layui-form-switch");
+                          var d = document.getElementsByTagName('em')[0];
+                          d.firstChild.nodeValue = '待处理';
+                          form.render(); //更新全部
+                          break;
+                  };
+              });
+              //列操作
+              table.on('tool(showTable)',function (obj) {
+                  var data = obj.data;
+                  switch (obj.event) {
+                      case 'del':
+                          var ids=[];
+                          ids.push(data.id);
+                          tipDialog(ids);
+                          break;
+                      case 'edit':
+                          $(".table_div").hide();
+                          $(".operation").show();
+                          $(".title").html("编辑");
+                          $(".operation input[name=id]").val(data.id);
+                          $(".operation input[name=name]").val(data.name);
+                          $(".operation input[name=jianyi]").val(data.jianyi);
+                          $(".operation input[name=cjName]").val(data.cjName);
+                          $(".operation input[name=shenheren]").val(data.shenheren);
+                          $(".operation input[name=statues]").val(data.statues);
+                          if (data.statues == 1) {
+                              $(".operation input[name=statues]").attr('checked', 'checked');
+                              $(".operation input[name=statues]").attr('type', 'hidden').val(1);
+                              var x = document.getElementsByClassName("layui-unselect layui-form-switch");
+                              x[0].setAttribute("class", "layui-unselect layui-form-switch layui-form-onswitch");
+                              var d = document.getElementsByTagName('em')[0];
+                              d.firstChild.nodeValue = '已修改';
+                          } else {
+                              $(".operation input[name=statues]").attr('type', 'hidden').removeAttr("checked").val(0);
+                              var x = document.getElementsByClassName("layui-unselect layui-form-switch");
+                              x[0].setAttribute("class", "layui-unselect layui-form-switch");
+                              var d = document.getElementsByTagName('em')[0];
+                              d.firstChild.nodeValue = '待处理';
+                          }
+                          form.render(); //更新全部
+                          break;
+                  }
+              });
+              search();
+              //导出
+              $('#export').on('click', function () {
+                  //原先分页limit
+                  var exportParams = {
+                      limit: 10000,
+                      key: $("#key").val()
+                  };
+                  CoreUtil.sendPost("/yijian/listByPage", exportParams, function (res) {
+                      //初始化渲染数据
+                      if (res.data != null && res.data.records != null) {
+                          table.exportFile(tableIns1.config.id, res.data.records, 'xls');
+                      }
+                  });
+              });
+
+              //删除
+              var tipDialog=function (ids) {
+                  layer.open({
+                      content: "确定要删除么?",
+                      yes: function(index, layero){
+                          layer.close(index); //如果设定了yes回调，需进行手工关闭
+                          CoreUtil.sendDelete("/yijian/delete",ids,function (res) {
+                              layer.msg(res.msg, {time:1000},function () {
+                                  search();
+                              });
+                          });
+                      }
+                  });
+              };
+
+              //返回
+              $("#btn_cancel").click(function() {
+                  $(".table_div").show();
+                  $(".operation").hide();
+                  return false;
+              });
+              form.on('switch(switch)', function () {
+                  $(".operation input[name=statues]").attr('type', 'hidden').val(this.checked ? 1 : 0);
+
+              });
+
+              // form.on('switch(switch)', function () {
+              //       $(".operation input[name=statues]").attr('type', 'hidden').val(this.checked ? 1 : 0);}
+              //监听保存
+              form.on('submit(submit)', function(data){
+                  if(data.field.id===undefined || data.field.id===null || data.field.id===""){
+                      CoreUtil.sendPost("/yijian/add",data.field,function (res) {
+                          $(".table_div").show();
+                          $(".operation").hide();
+                          search();
+                      });
+                  }else {
+                      CoreUtil.sendPut("/yijian/update",data.field,function (res) {
+                          $(".table_div").show();
+                          $(".operation").hide();
+                          search();
+                      });
+                  }
+
+                  return false;
+              });
+          });
+          });
+
+      });
+
+  $("#btn_").click(function() {
+      window.location.href='/index/project';
+      return false;
+  });
+  if('[[${t1.getProjectName()}]]'){
+      $(".table_div").hide();
+      $(".operation").show();
+      $(".title").html("新增");
+      $(".operation input[name=id]").val('');
+      $(".operation input[name=name]").val('[[${t1.getProjectName()}]]');
+      $(".operation input[name=jianyi]").val("");
+      $(".operation input[name=cjName]").val("[[${t1.getCjName()}]]");
+      $(".operation input[name=shenheren]").val("[[${t1.getSenheName()}]]");
+      $(".operation input[name=statues]").attr('checked', 'checked');
+      $(".operation input[name=statues]").attr('type', 'hidden').removeAttr("checked").val(0);
+      var x = document.getElementsByClassName("layui-unselect layui-form-switch");
+      x[0].setAttribute("class", "layui-unselect layui-form-switch");
+      var d = document.getElementsByTagName('em')[0];
+      d.firstChild.nodeValue = '待处理';
+      form.render(); //更新全部
+
+
+  }
+
+  //执行查询
+  function search() {
+    // console.log(role);
+
+      if(role=="1471316889581113345")
+      {
+         yuangong=t3;
+      }
+       else if(role=="1471316791631532034")
+          guanli=t3;
+      //这里以搜索为例
+      tableIns1.reload({
+          where: { //设定异步数据接口的额外参数，任意设
+              name: $("#key").val(),
+              shenheren:guanli,
+              cjName: yuangong,
+          }
+          , page: {
+              curr: 1 //重新从第 1 页开始
+          }
+      });
+  };
+       //return role;
+  //});
+ // console.log(window.funNA);
+
+
+</script>
