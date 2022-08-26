@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : 云服务器
-Source Server Version : 80027
+Source Server Version : 80030
 Source Host           : 123.56.220.192:3306
 Source Database       : blog
 
 Target Server Type    : MYSQL
-Target Server Version : 80027
+Target Server Version : 80030
 File Encoding         : 65001
 
-Date: 2022-08-24 11:33:09
+Date: 2022-08-26 11:18:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -57,8 +57,8 @@ CREATE TABLE `ms_article` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `comment_counts` int DEFAULT NULL COMMENT '评论数量',
   `create_date` bigint DEFAULT NULL COMMENT '创建时间',
-  `summary` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '简介',
-  `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '标题',
+  `summary` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '简介',
+  `title` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '标题',
   `view_counts` int DEFAULT NULL COMMENT '浏览数量',
   `weight` int NOT NULL COMMENT '是否置顶',
   `author_id` bigint DEFAULT NULL COMMENT '作者id',
@@ -70,18 +70,18 @@ CREATE TABLE `ms_article` (
 -- ----------------------------
 -- Records of ms_article
 -- ----------------------------
-INSERT INTO `ms_article` VALUES ('1', '32', '1621947720727', '\n\n这一切相较于传统Spring应用来说，已经变得非常的轻便、简单。', 'springboot介绍以及入门案例', '207', '1', '1', '1555756550424039427', '2');
+INSERT INTO `ms_article` VALUES ('1', '22', '1621947720727', '\n\n这一切相较于传统Spring应用来说，已经变得非常的轻便、简单。', 'springboot介绍以及入门案例', '208', '1', '1', '1555756550424039427', '2');
 INSERT INTO `ms_article` VALUES ('9', '0', '1613947720727', 'Vue (读音 /vjuː/，类似于 view) 是一套用于构建用户界面的渐进式框架。', 'Vue.js 到底是什么', '11', '0', '1', '20', '2');
-INSERT INTO `ms_article` VALUES ('10', '2', '1523947720727', '本节将介绍如何在项目中使用 Element。', 'Element相关', '19', '0', '1', '21', '2');
+INSERT INTO `ms_article` VALUES ('10', '0', '1523947720727', '本节将介绍如何在项目中使用 Element。', 'Element相关', '20', '0', '1', '21', '2');
 INSERT INTO `ms_article` VALUES ('1405564731300831233', '0', '1623947720727', '计算机网络实验', '计算机网络', '36', '0', '1', '1558821583481012226', '6');
-INSERT INTO `ms_article` VALUES ('1405909844724051969', '3', '1624030002164', 'spring 介绍', 'spring介绍', '34', '0', '1', '1555780351882854402', '2');
+INSERT INTO `ms_article` VALUES ('1405909844724051969', '0', '1624030002164', 'spring 介绍', 'spring介绍', '35', '0', '1', '1555780351882854402', '2');
 INSERT INTO `ms_article` VALUES ('1405916999732707330', '0', '1624031708047', 'springboot入门案例', 'SpringBoot入门案例', '36', '0', '1', '1405916999854342146', '2');
-INSERT INTO `ms_article` VALUES ('1554430960475545601', '6', '1659440195573', '测试上传文件功能', '我的第一篇博客', '28', '0', '1', '1554430960521682945', '3');
+INSERT INTO `ms_article` VALUES ('1554430960475545601', '4', '1659440195573', '测试上传文件功能', '我的第一篇博客', '29', '0', '1', '1554430960521682945', '3');
 INSERT INTO `ms_article` VALUES ('1555750866936598530', '3', '1659754885764', 'Css学习笔记', 'Css学习总结', '22', '0', '1555096810769481729', '1555755544994844674', '1');
 INSERT INTO `ms_article` VALUES ('1558042675785564161', '1', '1660301295596', 'java 后端春招秋招秘诀\n', 'Java后端基础', '8', '0', '1555096810769481729', '1558397539745071106', '2');
-INSERT INTO `ms_article` VALUES ('1558075068965781505', '1', '1660309018730', 'spring核心原理，面试常考', 'spring核心原理', '2', '0', '1555096810769481729', '1558075069192273922', '2');
+INSERT INTO `ms_article` VALUES ('1558075068965781505', '1', '1660309018730', 'spring核心原理，面试常考', 'spring核心原理', '3', '0', '1555096810769481729', '1558075069192273922', '2');
 INSERT INTO `ms_article` VALUES ('1558406356893499394', '2', '1660388003930', 'Mybatis的一二级缓存详解', 'Mabatis缓存机制', '4', '0', '1558082417612881922', '1558406356943831042', '2');
-INSERT INTO `ms_article` VALUES ('1560081784687362050', '1', '1660787457045', 'springMVC流程控制', 'SpringMVC原理流程', '3', '0', '1558082417612881922', '1560081978141245442', '2');
+INSERT INTO `ms_article` VALUES ('1560081784687362050', '1', '1660787457045', 'springMVC流程控制', 'SpringMVC原理流程', '4', '0', '1558082417612881922', '1560081978141245442', '2');
 
 -- ----------------------------
 -- Table structure for ms_article_body
@@ -89,8 +89,8 @@ INSERT INTO `ms_article` VALUES ('1560081784687362050', '1', '1660787457045', 's
 DROP TABLE IF EXISTS `ms_article_body`;
 CREATE TABLE `ms_article_body` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci,
-  `content_html` longtext CHARACTER SET utf8 COLLATE utf8_general_ci,
+  `content` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
+  `content_html` longtext CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci,
   `article_id` bigint NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `article_id` (`article_id`) USING BTREE
@@ -209,7 +209,7 @@ CREATE TABLE `ms_comment` (
   `author_id` bigint NOT NULL,
   `parent_id` bigint NOT NULL,
   `to_uid` bigint NOT NULL,
-  `level` varchar(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `level` varchar(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `article_id` (`article_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1560082065777033218 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
@@ -239,21 +239,9 @@ INSERT INTO `ms_comment` VALUES ('1553974620888121345', '555', '1659331395729', 
 INSERT INTO `ms_comment` VALUES ('1553974701729136642', '555', '1659331415004', '1', '1', '1405206347246522370', '1', '2');
 INSERT INTO `ms_comment` VALUES ('1553975617429585921', 'eeee', '1659331633323', '1', '1', '1405208637198131202', '1', '2');
 INSERT INTO `ms_comment` VALUES ('1553976258709307394', 'iiiii', '1659331786216', '1', '1', '0', '0', '1');
-INSERT INTO `ms_comment` VALUES ('1553976377651380225', 'iiiilll', '1659331814575', '1', '1553229739844591618', '0', '0', '1');
-INSERT INTO `ms_comment` VALUES ('1553976452318380034', 'uuuhhuhu', '1659331832376', '1', '1553229739844591618', '1553976258709307394', '1', '2');
-INSERT INTO `ms_comment` VALUES ('1554050092024086529', '还好', '1659349389449', '10', '1553229739844591618', '0', '0', '1');
 INSERT INTO `ms_comment` VALUES ('1554431894161170433', 'test', '1659440418172', '1554430960475545601', '1', '0', '0', '1');
 INSERT INTO `ms_comment` VALUES ('1554431923273834497', '不错', '1659440425114', '1554430960475545601', '1', '0', '0', '1');
-INSERT INTO `ms_comment` VALUES ('1554676579832098818', '好！', '1659498755733', '1', '1553229739844591618', '0', '0', '1');
-INSERT INTO `ms_comment` VALUES ('1554676621754167298', '不错', '1659498765778', '1', '1553229739844591618', '1554676579832098818', '1553229739844591618', '2');
-INSERT INTO `ms_comment` VALUES ('1554680922073411585', '不错', '1659499791052', '10', '1553229739844591618', '1554050092024086529', '1553229739844591618', '2');
-INSERT INTO `ms_comment` VALUES ('1555023961287548929', '00000', '1659581577961', '1', '1553229739844591618', '0', '0', '1');
-INSERT INTO `ms_comment` VALUES ('1555024256998563841', '666', '1659581648479', '1554430960475545601', '1553229739844591618', '0', '0', '1');
-INSERT INTO `ms_comment` VALUES ('1555024940863053825', '6666', '1659581811525', '1405909844724051969', '1553229739844591618', '0', '0', '1');
-INSERT INTO `ms_comment` VALUES ('1555025003899248641', '66', '1659581826554', '1405909844724051969', '1553229739844591618', '1555024940863053825', '1553229739844591618', '2');
-INSERT INTO `ms_comment` VALUES ('1555095072226279425', '不错', '1659598532144', '1405909844724051969', '1555094099747536898', '0', '0', '1');
 INSERT INTO `ms_comment` VALUES ('1555398358997286914', '2222', '1659670841342', '1554430960475545601', '1555096810769481729', '0', '0', '1');
-INSERT INTO `ms_comment` VALUES ('1555398383479439362', '88888', '1659670847182', '1554430960475545601', '1555096810769481729', '1555398358997286914', '1555096810769481729', '2');
 INSERT INTO `ms_comment` VALUES ('1555755681720766465', '不错', '1659756033721', '1555750866936598530', '1555096810769481729', '0', '0', '1');
 INSERT INTO `ms_comment` VALUES ('1557275073679888385', '呦西', '1660118284993', '1555750866936598530', '1555096810769481729', '0', '0', '1');
 INSERT INTO `ms_comment` VALUES ('1557348685381697537', '优秀', '1660135835388', '1555750866936598530', '1557347087549005825', '0', '0', '1');
@@ -291,16 +279,16 @@ DROP TABLE IF EXISTS `ms_sys_log`;
 CREATE TABLE `ms_sys_log` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `create_date` bigint DEFAULT NULL,
-  `ip` varchar(15) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `method` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `module` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `ip` varchar(15) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+  `method` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+  `module` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
   `nickname` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `operation` varchar(25) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `params` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `operation` varchar(25) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+  `params` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
   `time` bigint DEFAULT NULL,
   `userid` bigint DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of ms_sys_log
@@ -312,18 +300,18 @@ CREATE TABLE `ms_sys_log` (
 DROP TABLE IF EXISTS `ms_sys_user`;
 CREATE TABLE `ms_sys_user` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `account` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '账号',
+  `account` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '账号',
   `admin` bit(1) DEFAULT NULL COMMENT '是否管理员',
-  `avatar` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '头像',
+  `avatar` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '头像',
   `create_date` bigint DEFAULT NULL COMMENT '注册时间',
   `deleted` bit(1) DEFAULT NULL COMMENT '是否删除',
-  `email` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '邮箱',
+  `email` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '邮箱',
   `last_login` bigint DEFAULT NULL COMMENT '最后登录时间',
-  `mobile_phone_number` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机号',
-  `nickname` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '昵称',
-  `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '密码',
-  `salt` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '加密盐',
-  `status` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '状态',
+  `mobile_phone_number` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '手机号',
+  `nickname` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '昵称',
+  `password` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '密码',
+  `salt` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '加密盐',
+  `status` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1558082417612881923 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 
